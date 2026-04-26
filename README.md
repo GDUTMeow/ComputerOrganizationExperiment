@@ -7,3 +7,7 @@
 ### Experiment1: mux21a
 
 [link](./Experiment1)
+
+### Experiment2: 一位全加器
+
+[link](./Experiment2)

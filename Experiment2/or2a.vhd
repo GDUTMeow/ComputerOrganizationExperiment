@@ -1,0 +1,12 @@
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY or2a IS PORT (
+    a, b: IN STD_LOGIC;  
+    c: OUT STD_LOGIC
+    );
+END ENTITY or2a;
+
+ARCHITECTURE orGate OF or2a IS BEGIN
+    c <= a OR b ;   -- 或门置值
+END ARCHITECTURE orGate;
