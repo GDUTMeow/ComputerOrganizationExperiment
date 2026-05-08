@@ -29,7 +29,7 @@ END ARCHITECTURE one ;
 
 给定的 mux21a 实现了数据选择的功能，根据逻辑，我们可以得到元器件大致如下
 
-![](/Users/gamernotitle/Library/Application Support/typora-user-images/image-20260426100718474.png)
+![](./img/image-20260426100718474.png)
 
 当 `s=0` 时，此时选中的是 `a` 输入，输出 `y` 与输入 `a` 保持一致
 
