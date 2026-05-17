@@ -11,3 +11,7 @@
 ### Experiment2: 一位全加器
 
 [link](./Experiment2)
+
+### Experiment3: 正弦波发生器
+
+[link](./Experiment3)
