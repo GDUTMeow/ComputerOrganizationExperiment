@@ -12,7 +12,7 @@ END;
 ARCHITECTURE DACC OF SINGT IS
     COMPONENT data_rom PORT(    -- 调用数据存储器组件
         address: IN STD_LOGIC_VECTOR (5 DOWNTO 0); -- 6 位地址信号
-        inclock: IN STD_LOGIC ;    -- 地址锁存时钟
+        inclock: IN STD_LOGIC;    -- 地址锁存时钟
         q: OUT STD_LOGIC_VECTOR (7 DOWNTO 0)    -- 8 位数据输出总线
     );
     END COMPONENT;
