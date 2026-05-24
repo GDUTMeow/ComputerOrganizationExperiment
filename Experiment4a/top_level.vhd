@@ -85,7 +85,7 @@ ARCHITECTURE topArch OF top_level IS
     SIGNAL ir_negate, ir_halt, ir_branch: STD_LOGIC;    -- 指令寄存器取反指令、停止指令、分支指令
     SIGNAL acc_enD, acc_ld, acc_selAlu: STD_LOGIC;   -- 累加器使能信号、累加器加载信号、累加器 ALU 选择信号
     SIGNAL acc_Q: STD_LOGIC_VECTOR(7 DOWNTO 0); -- 累加器输出
-    SIGNAL alu_op: STD_LOGIC_VECTOR(2 DOWNTO 0);  -- ALU 运算类型输出
+    SIGNAL alu_op: STD_LOGIC_VECTOR(3 DOWNTO 0);  -- ALU 运算类型输出
     SIGNAL alu_accZ: STD_LOGIC; -- ALU 零标志输出
     SIGNAL alu_result: STD_LOGIC_VECTOR(7 DOWNTO 0);    -- ALU 运算结果输出
 BEGIN
