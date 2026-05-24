@@ -2,7 +2,7 @@
 
 创建并启动华为云服务器，使用 SSH 登录
 
-![](/Users/gamernotitle/Library/Application Support/CleanShot/media/media_DjgaPNZKiU/CleanShot%202026-05-24%20at%2009.01.00@2x.png)
+![](./img/CleanShot%202026-05-24%20at%2009.01.00@2x.png)
 
 登录后，使用 vim 创建 `hello.s` 文件，并将以下源码填入
 
@@ -42,6 +42,6 @@ $ ld hello.o -o hello
 
 尝试运行程序，结果如图
 
-![](/Users/gamernotitle/Library/Application Support/CleanShot/media/media_13Q7EHhbUB/CleanShot_2026-05-24_09.05.17@2x.png)
+![](./img/CleanShot_2026-05-24_09.05.17@2x.png)
 
 完成基础程序测试
