@@ -11,7 +11,7 @@ ENTITY controller IS PORT (                     -- 声明实体外部接口
     ir_and, ir_or, ir_not: IN STD_LOGIC;
     ir_neg, ir_halt, ir_branch: IN STD_LOGIC;
     acc_enD, acc_ld, acc_selAlu: OUT STD_LOGIC;
-    alu_op: OUT STD_LOGIC_VECTOR(2 DOWNTO 0)
+    alu_op: OUT STD_LOGIC_VECTOR(3 DOWNTO 0)
 );
 END controller;
 
@@ -128,12 +128,12 @@ BEGIN
         state = mul1 OR state = div1 OR state = not1 OR
         state = or1 ELSE '0';
 
-    alu_op <= "000" WHEN state = add0 OR state = add1 ELSE
-        "001" WHEN state = sub0 OR state = sub1 ELSE
-        "010" WHEN state = mul0 OR state = mul1 ELSE
-        "011" WHEN state = div0 OR state = div1 ELSE
-        "100" WHEN state = negate0 OR state = negate1 ELSE
-        "101" WHEN state = and0 OR state = and1 ELSE
-        "110" WHEN state = or0 OR state = or1 ELSE
-        "111" WHEN state = not0 OR state = not1;
+    alu_op <= "0000" WHEN state = add0 OR state = add1 ELSE
+        "0001" WHEN state = sub0 OR state = sub1 ELSE
+        "0010" WHEN state = mul0 OR state = mul1 ELSE
+        "0011" WHEN state = div0 OR state = div1 ELSE
+        "0100" WHEN state = negate0 OR state = negate1 ELSE
+        "0101" WHEN state = and0 OR state = and1 ELSE
+        "0110" WHEN state = or0 OR state = or1 ELSE
+        "0111" WHEN state = not0 OR state = not1;
 END controllerArch;

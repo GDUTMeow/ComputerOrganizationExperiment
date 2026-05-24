@@ -11,7 +11,7 @@ ENTITY top_level IS PORT (                      -- 声明实体外部接口
     acc_enDX, acc_ldX, acc_selAluX: OUT STD_LOGIC;   -- 累加器使能信号、累加器加载信号、累加器 ALU 选择信号输出
     acc_QX: OUT STD_LOGIC_VECTOR(7 DOWNTO 0);    -- 累加器输出
     alu_accZX: OUT STD_LOGIC;    -- ALU 零标志输出
-    alu_opX: OUT STD_LOGIC_VECTOR(2 DOWNTO 0)    -- ALU 运算类型输出
+    alu_opX: OUT STD_LOGIC_VECTOR(3 DOWNTO 0)    -- ALU 运算类型输出
 );
 END top_level;
 
@@ -44,7 +44,7 @@ ARCHITECTURE topArch OF top_level IS
 
     COMPONENT alu PORT (
         -- 运算类型、累加器输入、数据总线输入、运算结果输出、零标志输出 = alu.op .accD .dBus .result .accZ
-        op: IN STD_LOGIC_VECTOR(2 DOWNTO 0);
+        op: IN STD_LOGIC_VECTOR(3 DOWNTO 0);
         accD: IN STD_LOGIC_VECTOR(7 DOWNTO 0);
         dBus: IN STD_LOGIC_VECTOR(7 DOWNTO 0);
         result: OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
@@ -70,7 +70,7 @@ ARCHITECTURE topArch OF top_level IS
         ir_and, ir_or, ir_not: IN STD_LOGIC;    -- 指令寄存器与指令、或指令、非指令
         ir_neg, ir_halt, ir_branch: IN STD_LOGIC;   -- 指令寄存器取反指令、停止指令、分支指令
         acc_enD, acc_ld, acc_selAlu: OUT STD_LOGIC;     -- 累加器使能信号、累加器加载信号、累加器 ALU 选择信号
-        alu_op: OUT STD_LOGIC_VECTOR(2 DOWNTO 0)    -- ALU 运算类型输出
+        alu_op: OUT STD_LOGIC_VECTOR(3 DOWNTO 0)    -- ALU 运算类型输出
     );
     END COMPONENT;
 
