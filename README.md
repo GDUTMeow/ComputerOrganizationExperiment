@@ -15,3 +15,7 @@
 ### Experiment3: 正弦波发生器
 
 [link](./Experiment3)
+
+### 华为云实验
+
+[link](./HuaweiCloud)
