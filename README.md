@@ -19,3 +19,7 @@
 ### 华为云实验
 
 [link](./HuaweiCloud)
+
+### Experiment4a: 8 位硬布线 CPU 设计
+
+### Experiment4b: 8 位微程序 CPU 设计
