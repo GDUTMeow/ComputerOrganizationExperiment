@@ -11,7 +11,8 @@ ENTITY controller IS PORT (                     -- 声明实体外部接口
     ir_and, ir_or, ir_not: IN STD_LOGIC;
     ir_neg, ir_halt, ir_branch: IN STD_LOGIC;
     acc_enD, acc_ld, acc_selAlu: OUT STD_LOGIC;
-    alu_op: OUT STD_LOGIC_VECTOR(3 DOWNTO 0)
+    alu_op: OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+    state_out: OUT STD_LOGIC_VECTOR(4 DOWNTO 0) -- 输出当前状态，便于调试
 );
 END controller;
 
@@ -94,6 +95,21 @@ BEGIN
             END IF;
         END IF;
     END PROCESS;
+
+    state_out <= 
+        "00000" WHEN state = reset_state ELSE
+        "00001" WHEN state = fetch0 ELSE
+        "00010" WHEN state = fetch1 ELSE
+        "00011" WHEN state = load0 ELSE
+        "00100" WHEN state = load1 ELSE
+        "00101" WHEN state = store0 ELSE
+        "00110" WHEN state = store1 ELSE
+        "00111" WHEN state = add0 ELSE
+        "01000" WHEN state = add1 ELSE
+        "01001" WHEN state = sub0 ELSE
+        "01010" WHEN state = sub1 ELSE
+        "01111" WHEN state = halt ELSE
+        "11111";
 
     mem_enD <= '1' WHEN state = fetch0 OR state = fetch1 OR
         state = load0 OR state = load1 OR
