@@ -19,8 +19,8 @@ BEGIN
         dBus + "10000000" WHEN op = "0011" ELSE
         (NOT accD) - "00000001" WHEN op = "0100" ELSE
         accD - dBus WHEN op = "0101" ELSE
-        accD * dBus WHEN op = "0110" ELSE
-        accD * (NOT dBus) WHEN op = "0111" ELSE
+        (accD * dBus)(7 DOWNTO 0) WHEN op = "0110" ELSE -- 乘法结果位数是两个相加，但是输出为 8 位，截断一下
+        (accD * (NOT dBus))(7 DOWNTO 0) WHEN op = "0111" ELSE
         accD AND dBus WHEN op = "1010" ELSE
         accD NAND dBus WHEN op = "1011" ELSE
         accD OR dBus WHEN op = "1100" ELSE

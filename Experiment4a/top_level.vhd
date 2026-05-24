@@ -2,16 +2,16 @@ LIBRARY IEEE;
 USE IEEE.STD_LOGIC_1164.ALL;
 
 ENTITY top_level IS PORT (                      -- 声明实体外部接口
-    clk, reset: IN STD_LOGIC;
-    abusX: OUT STD_LOGIC_VECTOR(7 DOWNTO 0);    -- 数据总线输出
-    dbusX: OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
-    mem_enDX, mem_rwX: OUT STD_LOGIC;
-    pc_enAX, pc_ldX, pc_incX: OUT STD_LOGIC;
-    ir_enAX, ir_enDX, ir_ldX: OUT STD_LOGIC;
-    acc_enDX, acc_ldX, acc_selAluX: OUT STD_LOGIC;
-    acc_QX: OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
-    alu_accZX: OUT STD_LOGIC;∏
-    alu_opX: OUT STD_LOGIC_VECTOR(2 DOWNTO 0)
+    clk, reset: IN STD_LOGIC;   -- 时钟信号、复位信号
+    abusX: OUT STD_LOGIC_VECTOR(7 DOWNTO 0);    -- 地址总线输出
+    dbusX: OUT STD_LOGIC_VECTOR(7 DOWNTO 0);    -- 数据总线输出
+    mem_enDX, mem_rwX: OUT STD_LOGIC;   -- 内存使能信号、内存读写信号输出
+    pc_enAX, pc_ldX, pc_incX: OUT STD_LOGIC;    -- 程序计数器使能信号、程序计数器加载信号、程序计数器自增信号输出
+    ir_enAX, ir_enDX, ir_ldX: OUT STD_LOGIC;    -- 指令寄存器使能信号A、指令寄存器使能信号D、指令寄存器加载信号输出
+    acc_enDX, acc_ldX, acc_selAluX: OUT STD_LOGIC;   -- 累加器使能信号、累加器加载信号、累加器 ALU 选择信号输出
+    acc_QX: OUT STD_LOGIC_VECTOR(7 DOWNTO 0);    -- 累加器输出
+    alu_accZX: OUT STD_LOGIC;    -- ALU 零标志输出
+    alu_opX: OUT STD_LOGIC_VECTOR(2 DOWNTO 0)    -- ALU 运算类型输出
 );
 END top_level;
 
@@ -89,6 +89,7 @@ ARCHITECTURE topArch OF top_level IS
     SIGNAL alu_accZ: STD_LOGIC; -- ALU 零标志输出
     SIGNAL alu_result: STD_LOGIC_VECTOR(7 DOWNTO 0);    -- ALU 运算结果输出
 BEGIN
+    -- 实例化模块，连接信号
     pc: program_counter PORT MAP(clk, pc_enA, pc_ld, pc_inc, reset, abus, dbus);
     ir: instruction_register PORT MAP(clk, ir_enA, ir_enD, ir_ld, reset, abus, dbus,
         ir_load, ir_store, ir_add, ir_sub, ir_mul, ir_div,

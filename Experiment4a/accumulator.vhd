@@ -3,10 +3,10 @@ USE IEEE.STD_LOGIC_1164.ALL;
 USE IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 ENTITY accumulator IS PORT (                    -- 声明外部实体接口
-    clk, en_D, ld, selAlu, reset: IN STD_LOGIC; -- 时钟信号
-    aluD: IN STD_LOGIC_VECTOR(7 DOWNTO 0);
-    dBus: INOUT STD_LOGIC_VECTOR(7 DOWNTO 0);
-    q: OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
+    clk, en_D, ld, selAlu, reset: IN STD_LOGIC; -- 时钟信号，使能信号，加载信号，选择ALU输出信号，复位信号
+    aluD: IN STD_LOGIC_VECTOR(7 DOWNTO 0);  -- ALU 输出数据总线
+    dBus: INOUT STD_LOGIC_VECTOR(7 DOWNTO 0);   -- 数据总线，双向
+    q: OUT STD_LOGIC_VECTOR(7 DOWNTO 0)     -- 累加器输出端口
 );
 END accumulator;
 
