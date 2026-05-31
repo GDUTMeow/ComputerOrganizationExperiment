@@ -26,17 +26,17 @@ BEGIN
         "ZZZZZZZZ";
     dBus <= "0000" & irReg(3 DOWNTO 0) WHEN en_D = '1' ELSE
         "ZZZZZZZZ";
-
-    load    <= '1' WHEN irReg(7 DOWNTO 4) = "0000" ELSE '0';
-    store   <= '1' WHEN irReg(7 DOWNTO 4) = "0001" ELSE '0';
-    add     <= '1' WHEN irReg(7 DOWNTO 4) = "0010" ELSE '0';
-    sub     <= '1' WHEN irReg(7 DOWNTO 4) = "0011" ELSE '0';
-    mul     <= '1' WHEN irReg(7 DOWNTO 4) = "0100" ELSE '0';
-    div     <= '1' WHEN irReg(7 DOWNTO 4) = "0101" ELSE '0';
-    neg     <= '1' WHEN irReg = "0110" & "0000" ELSE '0';
-    andd    <= '1' WHEN irReg(7 DOWNTO 4) = "0111" ELSE '0';
-    orr     <= '1' WHEN irReg(7 DOWNTO 4) = "1000" ELSE '0';
-    nott    <= '1' WHEN irReg(7 DOWNTO 4) = "1001" ELSE '0';
-    halt    <= '1' WHEN irReg = "1010" & "0001" ELSE '0';
-    branch  <= '1' WHEN irReg(7 DOWNTO 4) = "1011" ELSE '0';
+    -- 指令集，吃掉 ram 过来的高 4 位
+    load    <= '1' WHEN irReg(7 DOWNTO 4) = "0000" ELSE '0';    -- OpCode = 0
+    store   <= '1' WHEN irReg(7 DOWNTO 4) = "0001" ELSE '0';    -- OpCode = 1
+    add     <= '1' WHEN irReg(7 DOWNTO 4) = "0010" ELSE '0';    -- OpCode = 2
+    sub     <= '1' WHEN irReg(7 DOWNTO 4) = "0011" ELSE '0';    -- OpCode = 3
+    mul     <= '1' WHEN irReg(7 DOWNTO 4) = "0100" ELSE '0';    -- OpCode = 4
+    div     <= '1' WHEN irReg(7 DOWNTO 4) = "0101" ELSE '0';    -- OpCode = 5
+    neg     <= '1' WHEN irReg = "0110" & "0000" ELSE '0';       -- OpCode = 6, Operand = 0
+    andd    <= '1' WHEN irReg(7 DOWNTO 4) = "0111" ELSE '0';    -- OpCode = 7
+    orr     <= '1' WHEN irReg(7 DOWNTO 4) = "1000" ELSE '0';    -- OpCode = 8
+    nott    <= '1' WHEN irReg(7 DOWNTO 4) = "1001" ELSE '0';    -- OpCode = 9
+    halt    <= '1' WHEN irReg = "1010" & "0001" ELSE '0';       -- OpCode = A, Operand = 1
+    branch  <= '1' WHEN irReg(7 DOWNTO 4) = "1011" ELSE '0';    -- OpCode = B
 END irArch;

@@ -97,19 +97,19 @@ BEGIN
     END PROCESS;
 
     state_out <= 
-        "00000" WHEN state = reset_state ELSE
-        "00001" WHEN state = fetch0 ELSE
-        "00010" WHEN state = fetch1 ELSE
-        "00011" WHEN state = load0 ELSE
-        "00100" WHEN state = load1 ELSE
-        "00101" WHEN state = store0 ELSE
-        "00110" WHEN state = store1 ELSE
-        "00111" WHEN state = add0 ELSE
-        "01000" WHEN state = add1 ELSE
-        "01001" WHEN state = sub0 ELSE
-        "01010" WHEN state = sub1 ELSE
-        "01111" WHEN state = halt ELSE
-        "11111";
+        "00000" WHEN state = reset_state ELSE   -- 0 -> reset_state
+        "00001" WHEN state = fetch0 ELSE        -- 1 -> fetch0
+        "00010" WHEN state = fetch1 ELSE        -- 2 -> fetch1
+        "00011" WHEN state = load0 ELSE         -- 3 -> load0
+        "00100" WHEN state = load1 ELSE         -- 4 -> load1
+        "00101" WHEN state = store0 ELSE        -- 5 -> store0
+        "00110" WHEN state = store1 ELSE        -- 6 -> store1
+        "00111" WHEN state = add0 ELSE          -- 7 -> add0
+        "01000" WHEN state = add1 ELSE          -- 8 -> add1
+        "01001" WHEN state = sub0 ELSE          -- 9 -> sub0
+        "01010" WHEN state = sub1 ELSE          -- A -> sub1
+        "01111" WHEN state = halt ELSE          -- F -> halt
+        "11111";        -- 31 -> Invalid state
 
     mem_enD <= '1' WHEN state = fetch0 OR state = fetch1 OR
         state = load0 OR state = load1 OR
