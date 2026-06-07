@@ -585,7 +585,7 @@ END topArch;
 
 ## CPU 电路图
 
-![](./img/CleanShot_2026-05-31_10.40.48@2x.png)
+![](./img/CleanShot_2026-05-31_10.40.48@2x-0804033.png)
 
 ## 实验结果分析
 
@@ -623,7 +623,7 @@ END topArch;
 
 对波形图的 reset 输入在开头置 1 以重置整个 CPU 的仿真状态，运行仿真，得到波形图如下
 
-![](./img/CleanShot_2026-05-31_11.29.56@2x.png)
+![](./img/CleanShot_2026-05-31_11.29.56@2x-0804033.png)
 
 #### 数据运算过程分析
 
@@ -640,7 +640,7 @@ END topArch;
 
 #### 指令周期分析
 
-1. PC = 0, LOAD 6
+##### 1. PC = 0, LOAD 6
 
 | 数据通路                  | 微操作序列                       | 说明                                     |
 | ------------------------- | -------------------------------- | ---------------------------------------- |
@@ -656,7 +656,39 @@ END topArch;
 | **load1 (110ns - 130ns)** |                                  |                                          |
 | ⑦ (dbus) -> accReg        | acc_ld <= '1', acc_selAlu <= '0' | 让累加器加载数据，ALU 接受数据总线的数据 |
 
-2. PC = 1, ADD 7
+* ① `pc_enA <= '1' WHEN state = fetch0 OR state = fetch1 ELSE '0';` *controller.vhd (Line 122)*
+  `aBus <= pcReg WHEN en_A = '1' ELSE "ZZZZZZZZ";` *program_counter.vhd (Line 27)*
+
+* ② `mem_enD <= '1' WHEN state = fetch0 OR state = fetch1 OR ... ELSE '0';` *controller.vhd (Line 113-120)*
+  `IF state = store0 THEN mem_rw <= '0'; ELSE mem_rw <= '1'; END IF;` *controller.vhd (Line 88-96)*
+  `dBus <= ram(conv_integer(unsigned(aBus))) WHEN reset = '0' AND en = '1' AND r_w = '1' ELSE "ZZZZZZZZ";` *ram.vhd (Line 33-35)*
+
+![](./img/fetch0.png)
+
+* ③ `ir_ld <= '1' WHEN state = fetch1 ELSE '0';` *controller.vhd (Line 135)*
+  `irReg <= dBus;` *instruction_register.vhd (Line 20)*
+
+* ④ `pc_inc <= '1' WHEN state = fetch1 ELSE '0';` *controller.vhd (Line 124)*
+  `pcReg <= pcReg + "00000001";` *program_counter.vhd (Line 22)*
+
+![](./img/fetch1.png)
+
+* ⑤ `ir_enA <= '1' WHEN state = load0 OR state = load1 OR ... ELSE '0';` *controller.vhd (Line 126-133)*
+  `aBus <= "0000" & irReg(3 DOWNTO 0) WHEN en_A = '1' ELSE "ZZZZZZZZ";` *instruction_register.vhd (Line 25-26)*
+
+* ⑥ `mem_enD <= '1' WHEN state = load0 OR state = load1 OR ... ELSE '0';` *controller.vhd (Line 113-120)*
+  `dBus <= ram(conv_integer(unsigned(aBus))) WHEN reset = '0' AND en = '1' AND r_w = '1' ELSE "ZZZZZZZZ";` *ram.vhd (Line 33-35)*
+
+![](./img/load0.png)
+
+* ⑦ `acc_ld <= '1' WHEN state = load1 OR ... ELSE '0';` *controller.vhd (Line 138-140)*
+  `acc_selAlu <= '1' WHEN ... ELSE '0';` *controller.vhd (Line 142-144)*
+  `accReg <= dBus;` *accumulator.vhd (Line 23)*
+
+![](./img/load1.png)
+
+
+##### 2. PC = 1, ADD 7
 
 | 数据通路                   | 微操作序列                       | 说明                                     |
 | -------------------------- | -------------------------------- | ---------------------------------------- |
@@ -673,7 +705,42 @@ END topArch;
 | ⑦ (dbus) + (acc) -> alu    | alu_op <= "0001"                 | 送入 ALU 操作类型 0001 = ADD             |
 | ⑧ (alu_result) -> acc      | acc_ld <= '1', acc_selAlu <= '1' | 让累加器加载数据，ALU 接受数据总线的数据 |
 
-3. PC = 2, SUB 8
+* ① `pc_enA <= '1' WHEN state = fetch0 OR state = fetch1 ELSE '0';` *controller.vhd (Line 122)*
+  `aBus <= pcReg WHEN en_A = '1' ELSE "ZZZZZZZZ";` *program_counter.vhd (Line 27)*
+
+* ② `mem_enD <= '1' WHEN state = fetch0 OR state = fetch1 OR ... ELSE '0';` *controller.vhd (Line 113-120)*
+  `IF state = store0 THEN mem_rw <= '0'; ELSE mem_rw <= '1'; END IF;` *controller.vhd (Line 88-96)*
+  `dBus <= ram(conv_integer(unsigned(aBus))) WHEN reset = '0' AND en = '1' AND r_w = '1' ELSE "ZZZZZZZZ";` *ram.vhd (Line 33-35)*
+
+![](./img/fetch0.png)
+
+* ③ `ir_ld <= '1' WHEN state = fetch1 ELSE '0';` *controller.vhd (Line 135)*
+  `irReg <= dBus;` *instruction_register.vhd (Line 20)*
+
+* ④ `pc_inc <= '1' WHEN state = fetch1 ELSE '0';` *controller.vhd (Line 124)*
+  `pcReg <= pcReg + "00000001";` *program_counter.vhd (Line 22)*
+
+![](./img/fetch1.png)
+
+* ⑤ `ir_enA <= '1' WHEN state = add0 OR state = add1 OR ... ELSE '0';` *controller.vhd (Line 126-133)*
+  `aBus <= "0000" & irReg(3 DOWNTO 0) WHEN en_A = '1' ELSE "ZZZZZZZZ";` *instruction_register.vhd (Line 25-26)*
+
+* ⑥ `mem_enD <= '1' WHEN state = add0 OR state = add1 OR ... ELSE '0';` *controller.vhd (Line 113-120)*
+  `dBus <= ram(conv_integer(unsigned(aBus))) WHEN reset = '0' AND en = '1' AND r_w = '1' ELSE "ZZZZZZZZ";` *ram.vhd (Line 33-35)*
+
+![](./img/load0.png)
+
+* ⑦ `alu_op <= "0000" WHEN state = add0 OR state = add1 ELSE ...;` *controller.vhd (Line 146)*
+  `result <= accD + dBus;` *alu.vhd (Line 22)*
+
+* ⑧ `acc_ld <= '1' WHEN ... OR state = add1 OR ... ELSE '0';` *controller.vhd (Line 138-140)*
+  `acc_selAlu <= '1' WHEN state = add1 OR ... ELSE '0';` *controller.vhd (Line 142-144)*
+  `accReg <= aluD;` *accumulator.vhd (Line 21)*
+
+![](./img/addsub1.png)
+
+
+##### 3. PC = 2, SUB 8
 
 | 数据通路                   | 微操作序列                       | 说明                                     |
 | -------------------------- | -------------------------------- | ---------------------------------------- |
@@ -690,7 +757,42 @@ END topArch;
 | ⑦ (acc) - (dbus) -> alu    | alu_op <= "0010"                 | 送入 ALU 操作类型 0010 = SUB             |
 | ⑧ (alu_result) -> acc      | acc_ld <= '1', acc_selAlu <= '1' | 让累加器加载数据，ALU 接受数据总线的数据 |
 
-4. PC = 3, SOTRE 5
+* ① `pc_enA <= '1' WHEN state = fetch0 OR state = fetch1 ELSE '0';` *controller.vhd (Line 122)*
+  `aBus <= pcReg WHEN en_A = '1' ELSE "ZZZZZZZZ";` *program_counter.vhd (Line 27)*
+
+* ② `mem_enD <= '1' WHEN state = fetch0 OR state = fetch1 OR ... ELSE '0';` *controller.vhd (Line 113-120)*
+  `IF state = store0 THEN mem_rw <= '0'; ELSE mem_rw <= '1'; END IF;` *controller.vhd (Line 88-96)*
+  `dBus <= ram(conv_integer(unsigned(aBus))) WHEN reset = '0' AND en = '1' AND r_w = '1' ELSE "ZZZZZZZZ";` *ram.vhd (Line 33-35)*
+
+![](./img/fetch0.png)
+
+* ③ `ir_ld <= '1' WHEN state = fetch1 ELSE '0';` *controller.vhd (Line 135)*
+  `irReg <= dBus;` *instruction_register.vhd (Line 20)*
+
+* ④ `pc_inc <= '1' WHEN state = fetch1 ELSE '0';` *controller.vhd (Line 124)*
+  `pcReg <= pcReg + "00000001";` *program_counter.vhd (Line 22)*
+
+![](./img/fetch1.png)
+
+* ⑤ `ir_enA <= '1' WHEN state = sub0 OR state = sub1 OR ... ELSE '0';` *controller.vhd (Line 126-133)*
+  `aBus <= "0000" & irReg(3 DOWNTO 0) WHEN en_A = '1' ELSE "ZZZZZZZZ";` *instruction_register.vhd (Line 25-26)*
+
+* ⑥ `mem_enD <= '1' WHEN state = sub0 OR state = sub1 OR ... ELSE '0';` *controller.vhd (Line 113-120)*
+  `dBus <= ram(conv_integer(unsigned(aBus))) WHEN reset = '0' AND en = '1' AND r_w = '1' ELSE "ZZZZZZZZ";` *ram.vhd (Line 33-35)*
+
+![](./img/load0.png)
+
+* ⑦ `alu_op <= "0001" WHEN state = sub0 OR state = sub1 ELSE ...;` *controller.vhd (Line 147)*
+  `result <= accD - dBus;` *alu.vhd (Line 30)*
+
+* ⑧ `acc_ld <= '1' WHEN ... OR state = sub1 OR ... ELSE '0';` *controller.vhd (Line 138-140)*
+  `acc_selAlu <= '1' WHEN ... OR state = sub1 OR ... ELSE '0';` *controller.vhd (Line 142-144)*
+  `accReg <= aluD;` *accumulator.vhd (Line 21)*
+
+![](./img/addsub1.png)
+
+
+##### 4. PC = 3, STORE 5
 
 | 数据通路                   | 微操作序列                    | 说明                                       |
 | -------------------------- | ----------------------------- | ------------------------------------------ |
@@ -701,13 +803,47 @@ END topArch;
 | ③ (dbus) -> irReg          | ir_ld <= '1'                  | 让指令寄存器 IR 进入置位操作               |
 | ④ (PC) + 1 -> PC           | pc_inc <= '1'                 | 程序计数器 PC 自增                         |
 | **store0 (330ns - 350ns)** |                               |                                            |
-| ⑤ (irReg(3..0)) -> abus    | ir_enA <= '1'                 | 让指令寄存器 IR 使能                       |
+| ⑤ (irReg(3..0)) -> abus    | ir_enA <= '1'                 | 让指令寄存器 IR 使能                     |
 | ⑥ (acc) -> dbus            | acc_enD <= '1'                | 让累加器 ACC 使能                          |
 | ⑦ dbus -> ram(abus)        | mem_rw <= '0'                 | 让存储器进入读写模式并写入来自累加器的数据 |
 | **store1 (350ns - 370ns)** |                               |                                            |
 | ⑧ dbus -> ram(abus)        | mem_rw <= '1'                 | 存储器进入读取模式                         |
 
-5. PC = 4, HALT
+* ① `pc_enA <= '1' WHEN state = fetch0 OR state = fetch1 ELSE '0';` *controller.vhd (Line 122)*
+  `aBus <= pcReg WHEN en_A = '1' ELSE "ZZZZZZZZ";` *program_counter.vhd (Line 27)*
+
+* ② `mem_enD <= '1' WHEN state = fetch0 OR state = fetch1 OR ... ELSE '0';` *controller.vhd (Line 113-120)*
+  `IF state = store0 THEN mem_rw <= '0'; ELSE mem_rw <= '1'; END IF;` *controller.vhd (Line 88-96)*
+  `dBus <= ram(conv_integer(unsigned(aBus))) WHEN reset = '0' AND en = '1' AND r_w = '1' ELSE "ZZZZZZZZ";` *ram.vhd (Line 33-35)*
+
+![](./img/fetch0.png)
+
+* ③ `ir_ld <= '1' WHEN state = fetch1 ELSE '0';` *controller.vhd (Line 135)*
+  `irReg <= dBus;` *instruction_register.vhd (Line 20)*
+
+* ④ `pc_inc <= '1' WHEN state = fetch1 ELSE '0';` *controller.vhd (Line 124)*
+  `pcReg <= pcReg + "00000001";` *program_counter.vhd (Line 22)*
+
+![](./img/fetch1.png)
+
+* ⑤ `ir_enA <= '1' WHEN state = store0 OR state = store1 OR ... ELSE '0';` *controller.vhd (Line 126-133)*
+  `aBus <= "0000" & irReg(3 DOWNTO 0) WHEN en_A = '1' ELSE "ZZZZZZZZ";` *instruction_register.vhd (Line 25-26)*
+
+* ⑥ `acc_enD <= '1' WHEN state = store0 OR state = store1 ELSE '0';` *controller.vhd (Line 137)*
+  `dBus <= accReg WHEN en_D = '1' ELSE "ZZZZZZZZ";` *accumulator.vhd (Line 28)*
+
+![](./img/store0.png)
+
+* ⑦ `IF state = store0 THEN mem_rw <= '0'; ELSE mem_rw <= '1'; END IF;` *controller.vhd (Line 88-96)*
+  `ram(conv_integer(unsigned(aBus))) <= dBus;` *ram.vhd (Line 29)*
+
+* ⑧ `mem_rw <= '1';` *controller.vhd (Line 92-93)*
+  `dBus <= "ZZZZZZZZ";` *ram.vhd (Line 34-35)*
+
+![](./img/store1.png)
+
+
+##### 5. PC = 4, HALT
 
 | 数据通路                   | 微操作序列                    | 说明                              |
 | -------------------------- | ----------------------------- | --------------------------------- |
@@ -719,6 +855,28 @@ END topArch;
 | ④ (PC) + 1 -> PC           | pc_inc <= '1'                 | 程序计数器 PC 自增                |
 | **halt (410ns 之后)**      |                               |                                   |
 | ⑤ state_out <= "01111"     |                               | 设置状态输出为 0x1111（HALT）     |
+
+* ① `pc_enA <= '1' WHEN state = fetch0 OR state = fetch1 ELSE '0';` *controller.vhd (Line 122)*
+  `aBus <= pcReg WHEN en_A = '1' ELSE "ZZZZZZZZ";` *program_counter.vhd (Line 27)*
+
+* ② `mem_enD <= '1' WHEN state = fetch0 OR state = fetch1 OR ... ELSE '0';` *controller.vhd (Line 113-120)*
+  `IF state = store0 THEN mem_rw <= '0'; ELSE mem_rw <= '1'; END IF;` *controller.vhd (Line 88-96)*
+  `dBus <= ram(conv_integer(unsigned(aBus))) WHEN reset = '0' AND en = '1' AND r_w = '1' ELSE "ZZZZZZZZ";` *ram.vhd (Line 33-35)*
+
+![](./img/fetch0.png)
+
+* ③ `ir_ld <= '1' WHEN state = fetch1 ELSE '0';` *controller.vhd (Line 135)*
+  `irReg <= dBus;` *instruction_register.vhd (Line 20)*
+
+* ④ `pc_inc <= '1' WHEN state = fetch1 ELSE '0';` *controller.vhd (Line 124)*
+  `pcReg <= pcReg + "00000001";` *program_counter.vhd (Line 22)*
+
+![](./img/fetch1.png)
+
+* ⑤ `state_out <= "01111" WHEN state = halt ELSE ...` *controller.vhd (Line 110)*
+
+![](./img/halt.png)
+
 
 ## 收获和体会
 
