@@ -107,6 +107,7 @@ ARCHITECTURE topArch OF top_level IS
 	END COMPONENT;
 	COMPONENT RAM
 		PORT (
+			clk : IN STD_LOGIC;
 			DATA : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
 			address : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
 			RW : IN STD_LOGIC;
@@ -174,7 +175,7 @@ BEGIN
 	alu_entity : ALU PORT MAP(clk, reset, accclear, controut, bro, pcjmp, acc);
 	rom_entity : ROM PORT MAP(caro, romo);
 
-	ram_entity : RAM PORT MAP(data, maro, rw, reset, ramo);
+	ram_entity : RAM PORT MAP(clkMBR, data, maro, rw, reset, ramo);
 
 	CONTROL <= romo;
 	RAMOUT <= ramo;

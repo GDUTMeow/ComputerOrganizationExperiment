@@ -7,3 +7,4 @@ compiled_partitions
 output_files
 simulation
 *.log
+*.sim.vwf
