@@ -4,26 +4,13 @@
 
 ## 实验
 
-### Experiment1: mux21a
+- [f1. mux21a](./Experiment1)
+- [f2. 一位全加器](./Experiment2)
+- [f3. 正弦波发生器](./Experiment3)
+- [f4a. 8 位硬布线 CPU 设计](./Experiment4a)
+- [f4b. 8 位微程序 CPU 设计](./Experiment4b)
+- [h1. 华为云实验（仅仝创、伏羲、软卓、强国）](./HuaweiCloud)
 
-[link](./Experiment1)
+## Credits
 
-### Experiment2: 一位全加器
-
-[link](./Experiment2)
-
-### Experiment3: 正弦波发生器
-
-[link](./Experiment3)
-
-### 华为云实验
-
-[link](./HuaweiCloud)
-
-### Experiment4a: 8 位硬布线 CPU 设计
-
-[link](./Experiment4a)
-
-### Experiment4b: 8 位微程序 CPU 设计
-
-[link](./Experiment4b)
+感谢 21 级的 March Kamisato 救我 f4b 于水深火热之中
