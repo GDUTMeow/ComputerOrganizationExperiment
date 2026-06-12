@@ -1,0 +1,190 @@
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.std_logic_unsigned.ALL;
+ENTITY top_level IS
+	PORT (
+		clk, reset, clkMBR : IN STD_LOGIC;--
+		ACCOUT : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);--
+		CONTROL : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);--
+		PCOUT : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);--
+		CAROUT : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);--
+		MAROUT : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);--
+		RAMIN : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);--
+		RAMOUT : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);--
+		IROUT : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);--
+		BRIN : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);--
+		BROUT : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)--
+
+	);
+END top_level;
+
+ARCHITECTURE topArch OF top_level IS
+	COMPONENT MBR
+		PORT (
+			clk, reset, MBR_OPc, ACC_MBRc, R, W : IN STD_LOGIC;
+			ACC_MBR : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+			RAM_MBR : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+			MBR_RAM : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+			MBR_BR : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+			MBR_OP : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+			MBR_MAR : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+			MBR_PC : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
+
+		);
+	END COMPONENT;
+
+	COMPONENT BR
+		PORT (
+			MBR_BRc : IN STD_LOGIC;
+			MBR_BR : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+			BRout : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
+
+		);
+	END COMPONENT;
+
+	COMPONENT MAR
+		PORT (
+			clk, PC_MARc, MBR_MARc : IN STD_LOGIC;
+			PC, MBR_MAR : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+			MARout : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
+		);
+	END COMPONENT;
+
+	COMPONENT PC
+		PORT (
+			clk, PCjmp, PCc1, PCinc, PCc3, reset : IN STD_LOGIC;
+			CONTRalu : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+			MBR_PC : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+			PCout : BUFFER STD_LOGIC_VECTOR(7 DOWNTO 0)
+
+		);
+
+	END COMPONENT;
+
+	COMPONENT IR
+		PORT (
+			opcode : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+			IRout : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
+
+		);
+
+	END COMPONENT;
+
+	COMPONENT CAR
+		PORT (
+			clk, reset : IN STD_LOGIC;
+			CARc : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+			CAR, OP : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+			CARout : BUFFER STD_LOGIC_VECTOR(7 DOWNTO 0)
+
+		);
+
+	END COMPONENT;
+
+	COMPONENT CONTROLR
+		PORT (
+			control : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+			R, W, RW, PCc1, PCinc, PCc3 : OUT STD_LOGIC;
+			ACCclear, MBR_MARc, PC_MARc : OUT STD_LOGIC;
+			ACC_MBRc, MBR_OPc, MBR_BRc : OUT STD_LOGIC;
+			CONTRout : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+			CARc : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+			CAR : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
+
+		);
+
+	END COMPONENT;
+
+	COMPONENT ALU
+		PORT (
+			clk, reset, ACCclear : IN STD_LOGIC;
+			aluCONTR : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+			BR : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+			PCjmp : OUT STD_LOGIC;
+			ACC : BUFFER STD_LOGIC_VECTOR(15 DOWNTO 0)
+		);
+
+	END COMPONENT;
+	COMPONENT RAM
+		PORT (
+			DATA : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+			address : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+			RW : IN STD_LOGIC;
+			reset : IN STD_LOGIC;
+			Q : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
+		);
+
+	END COMPONENT;
+
+	COMPONENT ROM
+		PORT (
+			address : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+			Q : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
+		);
+
+	END COMPONENT;
+
+	SIGNAL maro : STD_LOGIC_VECTOR(7 DOWNTO 0);
+	SIGNAL romo : STD_LOGIC_VECTOR(31 DOWNTO 0);
+	SIGNAL data : STD_LOGIC_VECTOR(15 DOWNTO 0);
+	SIGNAL caro : STD_LOGIC_VECTOR(7 DOWNTO 0);
+	SIGNAL rw : STD_LOGIC;
+	SIGNAL ramo : STD_LOGIC_VECTOR(15 DOWNTO 0);
+	SIGNAL accclear : STD_LOGIC;
+	SIGNAL controut : STD_LOGIC_VECTOR(3 DOWNTO 0);
+	SIGNAL bro : STD_LOGIC_VECTOR(15 DOWNTO 0);
+	SIGNAL pcjmp : STD_LOGIC;
+	SIGNAL acc : STD_LOGIC_VECTOR(15 DOWNTO 0);
+	SIGNAL carc : STD_LOGIC_VECTOR(3 DOWNTO 0);
+	SIGNAL cari : STD_LOGIC_VECTOR(7 DOWNTO 0);
+	SIGNAL iro : STD_LOGIC_VECTOR(7 DOWNTO 0);
+
+	SIGNAL pcc1 : STD_LOGIC;
+	SIGNAL pcinc : STD_LOGIC;
+	SIGNAL pcc3 : STD_LOGIC;
+
+	SIGNAL pc_marc : STD_LOGIC;
+	SIGNAL mbr_marc : STD_LOGIC;
+	SIGNAL pco : STD_LOGIC_VECTOR(7 DOWNTO 0);
+
+	SIGNAL mbr_brc : STD_LOGIC;
+	SIGNAL mbr_opc : STD_LOGIC;
+	SIGNAL acc_mbrc : STD_LOGIC;
+	SIGNAL r, w : STD_LOGIC;
+	SIGNAL mbr_br : STD_LOGIC_VECTOR(15 DOWNTO 0);
+	SIGNAL opcode : STD_LOGIC_VECTOR(7 DOWNTO 0);
+	SIGNAL mbr_mar : STD_LOGIC_VECTOR(7 DOWNTO 0);
+	SIGNAL mbr_pc : STD_LOGIC_VECTOR(7 DOWNTO 0);
+BEGIN
+
+	mbr_entity : MBR PORT MAP(clkMBR, reset, mbr_opc, acc_mbrc, r, w, acc, ramo, data, mbr_br, opcode, mbr_mar, mbr_pc);
+
+	br_entity : BR PORT MAP(mbr_brc, mbr_br, bro);
+
+	mar_entty : MAR PORT MAP(clk, pc_marc, mbr_marc, pco, mbr_mar, maro);
+
+	pc_entity : PC PORT MAP(clk, pcjmp, pcc1, pcinc, pcc3, reset, controut, mbr_pc, pco);
+
+	ir_entity : IR PORT MAP(opcode, iro);
+
+	car_entity : CAR PORT MAP(clk, reset, carc, cari, iro, caro);
+
+	control_entity : CONTROLR PORT MAP(romo, r, w, rw, pcc1, pcinc, pcc3, accclear, mbr_marc, pc_marc, acc_mbrc, mbr_opc, mbr_brc, controut, carc, cari);
+
+	alu_entity : ALU PORT MAP(clk, reset, accclear, controut, bro, pcjmp, acc);
+	rom_entity : ROM PORT MAP(caro, romo);
+
+	ram_entity : RAM PORT MAP(data, maro, rw, reset, ramo);
+
+	CONTROL <= romo;
+	RAMOUT <= ramo;
+	ACCOUT <= acc;
+	RAMIN <= data;
+	BRIN <= mbr_br;
+	BROUT <= bro;
+	PCOUT <= pco;
+	MAROUT <= maro;
+	IROUT <= iro;
+	CAROUT <= caro;
+
+END topArch;

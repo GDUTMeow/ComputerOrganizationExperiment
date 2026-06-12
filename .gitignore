@@ -2,3 +2,8 @@
 .vscode
 ~$*.docx
 ~$*.doc
+db/
+compiled_partitions
+output_files
+simulation
+*.log

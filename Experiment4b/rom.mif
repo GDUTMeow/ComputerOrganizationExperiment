@@ -1,0 +1,93 @@
+-- Copyright (C) 2020  Intel Corporation. All rights reserved.
+-- Your use of Intel Corporation's design tools, logic functions 
+-- and other software and tools, and any partner logic 
+-- functions, and any output files from any of the foregoing 
+-- (including device programming or simulation files), and any 
+-- associated documentation or information are expressly subject 
+-- to the terms and conditions of the Intel Program License 
+-- Subscription Agreement, the Intel Quartus Prime License Agreement,
+-- the Intel FPGA IP License Agreement, or other applicable license
+-- agreement, including, without limitation, that your use is for
+-- the sole purpose of programming logic devices manufactured by
+-- Intel and sold by Intel or its authorized distributors.  Please
+-- refer to the applicable agreement for further details, at
+-- https://fpgasoftware.intel.com/eula.
+
+-- Quartus Prime generated Memory Initialization File (.mif)
+
+WIDTH=32;
+DEPTH=256;
+
+ADDRESS_RADIX=HEX;
+DATA_RADIX=HEX;
+
+CONTENT BEGIN
+	000  :   00810000;
+	001  :   00A00000;
+	002  :   02000000;
+	003  :   01000014;
+	004  :   01000019;
+	005  :   0100001E;
+	006  :   01000023;
+	007  :   01000041;
+	008  :   01000028;
+	009  :   0100002D;
+	00A  :   01000032;
+	00B  :   01000037;
+	00C  :   0100003C;
+	00D  :   01000046;
+	00E  :   0100004B;
+	[00F..013]  :   00000000;
+	014  :   00840000;
+	015  :   00920200;
+	016  :   04080000;
+	[017..018]  :   00000000;
+	019  :   00840000;
+	01A  :   00810A00;
+	01B  :   00C03000;
+	01C  :   04080000;
+	01D  :   00000000;
+	01E  :   00840000;
+	01F  :   00810200;
+	020  :   00C03000;
+	021  :   04080000;
+	022  :   00000000;
+	023  :   00840000;
+	024  :   00810200;
+	025  :   00C04000;
+	026  :   04080000;
+	027  :   00000000;
+	028  :   00840000;
+	029  :   00810200;
+	02A  :   00C06000;
+	02B  :   04080000;
+	02C  :   00000000;
+	02D  :   00840000;
+	02E  :   00810200;
+	02F  :   00C07000;
+	030  :   04080000;
+	031  :   00000000;
+	032  :   00840000;
+	033  :   00808200;
+	034  :   04080000;
+	[035..036]  :   00000000;
+	037  :   00840000;
+	038  :   08092000;
+	039  :   04080000;
+	[03A..03B]  :   00000000;
+	03C  :   00840000;
+	03D  :   0080A200;
+	03E  :   04080000;
+	[03F..040]  :   00000000;
+	041  :   00840000;
+	042  :   00805000;
+	043  :   04080000;
+	[044..045]  :   00000000;
+	046  :   00840000;
+	047  :   00810200;
+	048  :   00C0B000;
+	049  :   04080000;
+	04A  :   00000000;
+	04B  :   0100004B;
+	[04C..0FF]  :   00000000;
+END;
