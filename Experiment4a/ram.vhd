@@ -15,18 +15,17 @@ ARCHITECTURE ramArch OF ram IS
 BEGIN
     PROCESS(en, reset, r_w, aBus, dBus) BEGIN
         IF reset = '1' THEN     -- Operand to address bus for finding the real operand with address
-            ram(0) <= x"14";    -- OpCode = 1, Operand = 4
-            ram(1) <= x"30";    -- OpCode = 3, Operand = 0
-            ram(2) <= x"25";    -- OpCode = 2, Operand = 5
-            ram(3) <= x"15";    -- OpCode = 1, Operand = 5
-            ram(4) <= x"46";    -- OpCode = 4, Operand = 6
-            ram(5) <= x"31";    -- OpCode = 3, Operand = 1
-            ram(6) <= x"55";    -- OpCode = 5, Operand = 5
-            ram(7) <= x"06";    -- OpCode = 0, Operand = 6
-            ram(8) <= x"01";    -- OpCode = 0, Operand = 1
+            -- ram(0) <= x"14";    -- OpCode = 1, Operand = 4
+            -- ram(1) <= x"30";    -- OpCode = 3, Operand = 0
+            -- ram(2) <= x"25";    -- OpCode = 2, Operand = 5
+            -- ram(3) <= x"15";    -- OpCode = 1, Operand = 5
+            -- ram(4) <= x"46";    -- OpCode = 4, Operand = 6
+            -- ram(5) <= x"31";    -- OpCode = 3, Operand = 1
+            -- ram(6) <= x"55";    -- OpCode = 5, Operand = 5
+            -- ram(7) <= x"06";    -- OpCode = 0, Operand = 6
+            -- ram(8) <= x"01";    -- OpCode = 0, Operand = 1
             
             -- 傻逼 Inter Quartus 不支持 08 标准以后的 VHDL 多行注释，不要直接贴
-            /*
             ram(0) <= x"06";    -- Load [$6] => acc = 24
             ram(1) <= x"27";    -- [$6] + [$7] => 24 + 43 = 67
             ram(2) <= x"38";    -- acc - [$8] => 67 - 33 = 34
@@ -36,7 +35,7 @@ BEGIN
             ram(6) <= x"18";    -- 预存 24
             ram(7) <= x"2B";    -- 预存 43
             ram(8) <= x"21";    -- 预存 33
-            */
+            
 
         ELSIF r_w = '0' THEN    -- rw = 0 写入模式，转为 int 类型写入
             ram(conv_integer(unsigned(aBus))) <= dBus;

@@ -150,6 +150,5 @@ BEGIN
         "0011" WHEN state = div0 OR state = div1 ELSE
         "0100" WHEN state = negate0 OR state = negate1 ELSE
         "0101" WHEN state = and0 OR state = and1 ELSE
-        "0110" WHEN state = or0 OR state = or1 ELSE
-        "0111" WHEN state = not0 OR state = not1;
-END controllerArch;
+        "0110" WHEN state = or0 OR state = or1;
+    END controllerArch;

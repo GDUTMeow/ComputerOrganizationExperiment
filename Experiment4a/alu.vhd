@@ -16,10 +16,12 @@ ARCHITECTURE aluArch OF alu IS BEGIN
         VARIABLE tmpResult: STD_LOGIC_VECTOR(15 DOWNTO 0); -- 用于存储乘法结果
     BEGIN
         CASE op IS
-            WHEN "0000" => -- 取反加一为负数
-                result <= (NOT accD) + "00000001";
-            WHEN "0001" => -- 加法
+            WHEN "0000" => -- 加
                 result <= accD + dBus;
+                -- result <= (NOT accD) + "00000001";
+            WHEN "0001" => -- 减
+                -- result <= accD + dBus;
+                result <= accD - dBus;
             WHEN "0010" => -- +128
                 result <= accD + "10000000";
             WHEN "0011" => -- 总线 +128
