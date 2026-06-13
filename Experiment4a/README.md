@@ -656,6 +656,8 @@ END topArch;
 | **load1 (110ns - 130ns)** |                                  |                                          |
 | ⑦ (dbus) -> accReg        | acc_ld <= '1', acc_selAlu <= '0' | 让累加器加载数据，ALU 接受数据总线的数据 |
 
+![](./img/CleanShot_2026-06-13_19.25.27@2x.png)
+
 * ① `pc_enA <= '1' WHEN state = fetch0 OR state = fetch1 ELSE '0';` *controller.vhd (Line 122)*
   `aBus <= pcReg WHEN en_A = '1' ELSE "ZZZZZZZZ";` *program_counter.vhd (Line 27)*
 
@@ -704,6 +706,8 @@ END topArch;
 | **add1 (190ns - 210ns)**   |                                  |                                          |
 | ⑦ (dbus) + (acc) -> alu    | alu_op <= "0001"                 | 送入 ALU 操作类型 0001 = ADD             |
 | ⑧ (alu_result) -> acc      | acc_ld <= '1', acc_selAlu <= '1' | 让累加器加载数据，ALU 接受数据总线的数据 |
+
+![](./img/CleanShot_2026-06-13_19.37.36@2x.png)
 
 * ① `pc_enA <= '1' WHEN state = fetch0 OR state = fetch1 ELSE '0';` *controller.vhd (Line 122)*
   `aBus <= pcReg WHEN en_A = '1' ELSE "ZZZZZZZZ";` *program_counter.vhd (Line 27)*
@@ -757,6 +761,8 @@ END topArch;
 | ⑦ (acc) - (dbus) -> alu    | alu_op <= "0010"                 | 送入 ALU 操作类型 0010 = SUB             |
 | ⑧ (alu_result) -> acc      | acc_ld <= '1', acc_selAlu <= '1' | 让累加器加载数据，ALU 接受数据总线的数据 |
 
+![](./img/CleanShot_2026-06-13_19.46.41@2x.png)
+
 * ① `pc_enA <= '1' WHEN state = fetch0 OR state = fetch1 ELSE '0';` *controller.vhd (Line 122)*
   `aBus <= pcReg WHEN en_A = '1' ELSE "ZZZZZZZZ";` *program_counter.vhd (Line 27)*
 
@@ -809,6 +815,8 @@ END topArch;
 | **store1 (350ns - 370ns)** |                               |                                            |
 | ⑧ dbus -> ram(abus)        | mem_rw <= '1'                 | 存储器进入读取模式                         |
 
+![](./img/CleanShot_2026-06-13_19.53.30@2x.png)
+
 * ① `pc_enA <= '1' WHEN state = fetch0 OR state = fetch1 ELSE '0';` *controller.vhd (Line 122)*
   `aBus <= pcReg WHEN en_A = '1' ELSE "ZZZZZZZZ";` *program_counter.vhd (Line 27)*
 
@@ -855,6 +863,8 @@ END topArch;
 | ④ (PC) + 1 -> PC           | pc_inc <= '1'                 | 程序计数器 PC 自增                |
 | **halt (410ns 之后)**      |                               |                                   |
 | ⑤ state_out <= "01111"     |                               | 设置状态输出为 0x1111（HALT）     |
+
+![](./img/CleanShot_2026-06-13_20.01.06@2x.png)
 
 * ① `pc_enA <= '1' WHEN state = fetch0 OR state = fetch1 ELSE '0';` *controller.vhd (Line 122)*
   `aBus <= pcReg WHEN en_A = '1' ELSE "ZZZZZZZZ";` *program_counter.vhd (Line 27)*
